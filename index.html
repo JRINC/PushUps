@@ -91,7 +91,8 @@
 	    var obj = '<div class="container" style="background-color:'+data.color+'">'+data.data+'</div> <div class="time"><time>'+new Date()+'</time></div>';
 	    $('#itemsContainer').prepend(obj);
 	    $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-	    socket.emit('my other event', { my: 'data' });
+	    socket.emit('my other event', { my: 'data' })
+        notifyMe(data.data);
 	  });
 	
     $('#Mensaje').keyup(function(e){
@@ -115,12 +116,44 @@
                 url: 'http://10.0.33.66:8899/notificaciones',
                 data: '{"data":'+'"'+$('#Mensaje').val()+'","color":"'+$.color+'"}',
                 contentType: "application/json",
-                success: function(data) { $('#Mensaje').val(''); },
+                success: function(data) {  $('#Mensaje').val(''); },
                 dataType: 'json'
             });
         }
         
-        // 
+        function notifyMe(Mensaje) {
+  // Let's check if the browser supports notifications
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  // Let's check if the user is okay to get some notification
+  else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    var notification = new Notification(Mensaje);
+  }
+
+  // Otherwise, we need to ask the user for permission
+  // Note, Chrome does not implement the permission static property
+  // So we have to check for NOT 'denied' instead of 'default'
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+
+      // Whatever the user answers, we make sure we store the information
+      if(!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+
+      // If the user is okay, let's create a notification
+      if (permission === "granted") {
+        var notification = new Notification(Mensaje);
+      }
+    });
+  }
+
+  // At last, if the user already denied any notification, and you 
+  // want to be respectful there is no need to bother him any more.
+} 
     
 	</script>
 	</body>
