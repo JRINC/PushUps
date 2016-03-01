@@ -11,7 +11,9 @@ io.on('connection', function (socket) {
 });
 app.post('/notificaciones', function(request, respond) {
     request.on('data', function(data) {
-		var body = JSON.parse(data);
+		console.log('data recibida'+data);
+        var body = JSON.parse(data);
+        console.log('data recibida 2:'+body);
 		io.sockets.emit('news', body);
 		respond.end();
     });

@@ -68,7 +68,6 @@
 		<div class="header">Testing - socket.io / express</div>
 		<h4>&nbsp;&nbsp;Notificaciones recibidas</h4>
         <div id="Mensaje" class="containerEnviar">
-            <input type="text" id="ip" placeholder="ip"/>
             <input type="text" id="mensaje" placeholder="Mensaje"/>
             <button id="enviar">Enviar</button>
         </div>
@@ -86,6 +85,19 @@
 	    socket.emit('my other event', { my: 'data' });
 	  });
 	
+        $( "#enviar" ).click(function() {
+           
+           $.ajax({
+                type: 'POST',
+                url: '/notificaciones',
+                data: '{"data":'+'"'+$('#mensaje').val()+'"}',
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        });
+        
+        // success: function(data) { alert('data: ' + data); },
+    
 	</script>
 	</body>
 </html>
