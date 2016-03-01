@@ -33,19 +33,7 @@
 				background-color: #d3f9ff;
 				padding: 10px;
 				border-radius:5px;
-				font-size: 14px;
 				width: 40%;
-
-			}
-
-            .containerEnviar {
-				border:2px solid #d45;
-				background-color: #ede;
-				padding: 10px;
-				border-radius:5px;
-				font-size: 14px;
-				width: 40%;
-                margin-bottom: 5px;
 
 			}
 
@@ -61,42 +49,78 @@
 				border-top:0px;
 				width: 98%;
 			}
+            
+            #mensaje {
+                width: 564px;
+                height: 50px;
+                border: 0px;
+                border:2px solid #dddddd;
+				padding: 10px;
+				border-radius:5px;
+				font-size: 14px;
+                margin-bottom: 5px;
+            }
 
 		</style>
 	</head>
 	<body topmargin="0">
 		<div class="header">Testing - socket.io / express</div>
 		<h4>&nbsp;&nbsp;Notificaciones recibidas</h4>
-        <div id="Mensaje" class="containerEnviar">
-            <input type="text" id="mensaje" placeholder="Mensaje"/>
-            <button id="enviar">Enviar</button>
-        </div>
+            <input type="text"  id="Mensaje" placeholder="Mensaje"/>
+        
         <div id="itemsContainer">
 		 </div>
 	<script src="socket.io/socket.io.js"></script>
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<script>
-	 var socket = io.connect('http://localhost:8899');
+        
+        function pastelColors(){
+    var r = (Math.round(Math.random()* 127) + 127).toString(16);
+    var g = (Math.round(Math.random()* 127) + 127).toString(16);
+    var b = (Math.round(Math.random()* 127) + 127).toString(16);
+    return '#' + r + g + b;
+}
+        
+     $(document).ready(function(){
+         $.color = pastelColors();
+     });
+        
+	 var socket = io.connect('http://10.0.33.66:8899');
 	  socket.on('news', function (data) {
-	    var obj = '<div class="container">'+data.data+'</div> <div class="time"><time>'+new Date()+'</time></div>';
-	    $('#itemsContainer').append(obj);
+	    var obj = '<div class="container" style="background-color:'+data.color+'">'+data.data+'</div> <div class="time"><time>'+new Date()+'</time></div>';
+	    $('#itemsContainer').prepend(obj);
 	    $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
 	    socket.emit('my other event', { my: 'data' });
 	  });
 	
-        $( "#enviar" ).click(function() {
-           
-           $.ajax({
+    $('#Mensaje').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});
+    
+    $('#Mensaje').bind("enterKey",function(e){
+        if($('#Mensaje').val()!=""){
+            enviar();
+        }
+        
+    });
+    
+        
+        function enviar () {
+             $.ajax({
                 type: 'POST',
-                url: '/notificaciones',
-                data: '{"data":'+'"'+$('#mensaje').val()+'"}',
+                url: 'http://10.0.33.66:8899/notificaciones',
+                data: '{"data":'+'"'+$('#Mensaje').val()+'","color":"'+$.color+'"}',
                 contentType: "application/json",
+                success: function(data) { $('#Mensaje').val(''); },
                 dataType: 'json'
             });
-        });
+        }
         
-        // success: function(data) { alert('data: ' + data); },
+        // 
     
 	</script>
 	</body>
