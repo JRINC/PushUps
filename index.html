@@ -38,6 +38,17 @@
 
 			}
 
+            .containerEnviar {
+				border:2px solid #d45;
+				background-color: #ede;
+				padding: 10px;
+				border-radius:5px;
+				font-size: 14px;
+				width: 40%;
+                margin-bottom: 5px;
+
+			}
+
 			.header{
 				font-family: verdana;
 				font-size: 14px;
@@ -56,8 +67,12 @@
 	<body topmargin="0">
 		<div class="header">Testing - socket.io / express</div>
 		<h4>&nbsp;&nbsp;Notificaciones recibidas</h4>
-		<div id="itemsContainer">
-		
+        <div id="Mensaje" class="containerEnviar">
+            <input type="text" id="ip" placeholder="ip"/>
+            <input type="text" id="mensaje" placeholder="Mensaje"/>
+            <button id="enviar">Enviar</button>
+        </div>
+        <div id="itemsContainer">
 		 </div>
 	<script src="socket.io/socket.io.js"></script>
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
