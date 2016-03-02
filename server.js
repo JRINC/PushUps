@@ -10,7 +10,6 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 io.on('connection', function (socket) {
-  socket.emit('news', { data: 'Server up :D',color:'aa41d3' });
   socket.emit('news', { user: 'Server', avatar: 'unnamed.jpg', data: 'Server up :D',color:'aa41d3' });
   socket.on('my other event', function (data) {});
 });
