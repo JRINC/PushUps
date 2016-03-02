@@ -1,6 +1,8 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var express = require('express');
+app.use(express.static(__dirname+'/img'));
 server.listen(8899);
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -16,5 +18,7 @@ app.post('/notificaciones', function(request, respond) {
         console.log('data recibida 2:'+body);
 		io.sockets.emit('news', body);
 		respond.end();
-    });
+    })
 });
+
+
