@@ -1,12 +1,21 @@
 <html>
 	<head>
 	<!--
-	 * Author:		Gianluca Guarini
+	 Push Example -------------------------V1
+     * Author:		Gianluca Guarini
 	 * Contact: 	gianluca.guarini@gmail.com
 	 * Website:		http://www.gianlucaguarini.com/
 	 * Twitter:		@gianlucaguarini
+     Broadcast    -------------------------V2
+     * Author:		Carlos García
+	 * Contact: 	carlucho.garcia@gmail.com
+	 * Twitter:		@akakrlos
+     colaborador --------------------------v2
+     * Author:		Jean De Andrade
+	 * Contact: 	Jeancufm@gmail.com
+	 * Twitter:		@jeancufm
 	-->
-		<title>Push notification server</title>
+		<title>Dev Chat ;)</title>
 		<style>
 			body{
 				font-family: verdana;
@@ -69,7 +78,7 @@
 	<body topmargin="0">
 		<div class="header">[Dev Chat :D] De los desarrolladores para los desarrolladores.</div>
 		
-            <input type="text"  id="Mensaje" placeholder="Mensaje"/>
+            <input type="text" placeholder="Escriba un mensaje..."  id="Mensaje" />
         
         <div id="itemsContainer">
 		 </div>
@@ -112,7 +121,7 @@
         
     });
     
-        
+
         function enviar () {
              $.ajax({
                 type: 'POST',
@@ -124,16 +133,21 @@
             });
         }
         
-        function notifyMe(Mensaje) {
+  function notifyMe(Mensaje) {
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
-    alert("This browser does not support desktop notification");
+   // alert("This browser does not support desktop notification");
   }
 
   // Let's check if the user is okay to get some notification
   else if (Notification.permission === "granted") {
     // If it's okay let's create a notification
-    var notification = new Notification(Mensaje);
+    //var notification = new Notification(Mensaje);
+    
+    var options = {icon:'logo.png',  body:Mensaje  };
+    
+    var notification = new Notification("Nuevo mensaje:",options);
+    
   }
 
   // Otherwise, we need to ask the user for permission
@@ -159,5 +173,5 @@
 } 
     
 	</script>
-	</body>
+    </body>
 </html>
