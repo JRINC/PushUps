@@ -20,10 +20,8 @@ io.on('connection', function (socket) {
 });
 app.post('/notificaciones', function(request, respond) {
     request.on('data', function(data) {
-		console.log('data recibida'+data);
         var body = JSON.parse(data);
         body.fecha = Date();
-        console.log('data recibida 2:'+body);
 		io.sockets.emit('news', body);
          var mydatos =  {
                 color:body.color,
@@ -34,8 +32,6 @@ app.post('/notificaciones', function(request, respond) {
 		respond.end();
     })
 });
-
-
 function appendObject(obj)
 {
   var configFile = fs.readFileSync('temp/backup.json');

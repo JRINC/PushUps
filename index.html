@@ -92,108 +92,115 @@
     <script src="bootstrap.min.js"></script>
 	<script>
         var url      = window.location.href
-    function pastelColors(){
-        var r = (Math.round(Math.random()* 127) + 127).toString(16);
-        var g = (Math.round(Math.random()* 127) + 127).toString(16);
-        var b = (Math.round(Math.random()* 127) + 127).toString(16);
-        return '#' + r + g + b;
-    }
-     $(document).ready(function(){
-         $.color = pastelColors();
-         LeerArchivoJson();
-     });
-	 var socket = io.connect(url);
-	  socket.on('news', function (data) {
-          
-     //     <div class="alert alert-success" role="alert">...</div>
-	    var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+data.color+'">'+data.data+'</div> <div class="time"><time>'+data.fecha+'</time></div></div>';
-	    $('#itemsContainer').prepend(obj);
-	    $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-	    socket.emit('my other event', { my: 'data' })
-        notifyMe(data.data);
-	  });
-	
-    $('#Mensaje').keyup(function(e){
-        if(e.keyCode == 13)
+        function pastelColors(){
+          var hue = Math.floor(Math.random() * 360);
+            var pastel = 'hsl(' + hue + ', 100%, 87.5%)';
+            return pastel
+        }
+        $(document).ready(function(){
+            $.color = pastelColors();
+            LeerArchivoJson();
+        });
+        var socket = io.connect(url);
+        socket.on('news', function (data) {
+            
+        //     <div class="alert alert-success" role="alert">...</div>
+            var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+data.color+'">'+unescape(data.data)+'</div> <div class="time"><time>'+data.fecha+'</time></div></div>';
+            $('#itemsContainer').prepend(obj);
+            $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            socket.emit('my other event', { my: 'data' })
+            notifyMe(data.data);
+        });
+        $('#Mensaje').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                $(this).trigger("enterKey");
+            }
+        });
+        $('#Mensaje').bind("enterKey",function(e){
+            if($('#Mensaje').val()!=""){
+                enviar();
+            } 
+        });
+        function enviar () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/notificaciones',
+                    data: '{"data":'+'"'+escape(strip_tags($('#Mensaje').val()))+'","color":"'+$.color+'"}',
+                    contentType: "application/json",
+                    success: function(data) {  $('#Mensaje').val(''); },
+                    error: function(data) { alert("error");},
+                    dataType: 'text'
+                });
+            }
+       function strip_tags(input, allowed) {
+                allowed = (((allowed || '') + '')
+                .toLowerCase()
+                .match(/<[a-z][a-z0-9]*>/g) || [])
+                .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+                commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+            return input.replace(commentsAndPhpTags, '')
+                .replace(tags, function($0, $1) {
+                return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+                });
+            }
+        function LeerArchivoJson()
         {
-            $(this).trigger("enterKey");
+            $.ajax({
+                    type: 'GET',
+                    url: '/json',
+                    contentType: "application/json",
+                    data: '',
+                    success: function(data) {                         
+                            var jsonData = (JSON.parse(data));
+                            for(f=0;f<jsonData['Backup'].length;f++)
+                            {
+                                var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+jsonData['Backup'][f].color+'">'+unescape(jsonData['Backup'][f].mensaje)+'</div> <div class="time"><time>'+jsonData['Backup'][f].fecha+'</time></div></div>';
+                                $('#itemsContainer').prepend(obj);
+                            }
+                    },
+                    dataType: 'text'
+                });
         }
-    });
-    $('#Mensaje').bind("enterKey",function(e){
-        if($('#Mensaje').val()!=""){
-            enviar();
-        } 
-    });
-    function enviar () {
-             $.ajax({
-                type: 'POST',
-                url: '/notificaciones',
-                data: '{"data":'+'"'+$('#Mensaje').val()+'","color":"'+$.color+'"}',
-                contentType: "application/json",
-                success: function(data) {  $('#Mensaje').val(''); },
-                error: function(data) { alert("error");},
-                dataType: 'text'
-            });
+    function notifyMe(Mensaje) {
+        // Let's check if the browser supports notifications
+        if (!("Notification" in window)) {
+        // alert("This browser does not support desktop notification");
         }
-    function LeerArchivoJson()
-    {
-         $.ajax({
-                type: 'GET',
-                url: '/json',
-                contentType: "application/json",
-                data: '',
-                success: function(data) {                         
-                        var jsonData = (JSON.parse(data));
-                        for(f=0;f<jsonData['Backup'].length;f++)
-                        {
-                             console.log(jsonData['Backup'][f]);
-                             var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+jsonData['Backup'][f].color+'">'+jsonData['Backup'][f].mensaje+'</div> <div class="time"><time>'+jsonData['Backup'][f].fecha+'</time></div></div>';
-	                         $('#itemsContainer').prepend(obj);
-	                         $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-                        }
-                },
-                dataType: 'text'
-            });
-    }
+
+        // Let's check if the user is okay to get some notification
+        else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        //var notification = new Notification(Mensaje);
         
-  function notifyMe(Mensaje) {
-  // Let's check if the browser supports notifications
-  if (!("Notification" in window)) {
-   // alert("This browser does not support desktop notification");
-  }
+        var options = {icon:'logo.png',  body:unescape(Mensaje)  };
+        
+        var notification = new Notification("Nuevo mensaje:",options);
+        
+        }
 
-  // Let's check if the user is okay to get some notification
-  else if (Notification.permission === "granted") {
-    // If it's okay let's create a notification
-    //var notification = new Notification(Mensaje);
-    
-    var options = {icon:'logo.png',  body:Mensaje  };
-    
-    var notification = new Notification("Nuevo mensaje:",options);
-    
-  }
+    // Otherwise, we need to ask the user for permission
+    // Note, Chrome does not implement the permission static property
+    // So we have to check for NOT 'denied' instead of 'default'
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
 
-  // Otherwise, we need to ask the user for permission
-  // Note, Chrome does not implement the permission static property
-  // So we have to check for NOT 'denied' instead of 'default'
-  else if (Notification.permission !== 'denied') {
-    Notification.requestPermission(function (permission) {
+            // Whatever the user answers, we make sure we store the information
+            if(!('permission' in Notification)) {
+                Notification.permission = permission;
+            }
 
-      // Whatever the user answers, we make sure we store the information
-      if(!('permission' in Notification)) {
-        Notification.permission = permission;
-      }
-
-      // If the user is okay, let's create a notification
-      if (permission === "granted") {
-        var notification = new Notification(Mensaje);
-      }
-    });
-  }
+            // If the user is okay, let's create a notification
+            if (permission === "granted") {
+                var notification = new Notification(Mensaje);
+            }
+            });
+       }
 
   // At last, if the user already denied any notification, and you 
   // want to be respectful there is no need to bother him any more.
-} 
+    } 
     
 	</script>
     </body>
