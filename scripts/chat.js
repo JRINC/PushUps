@@ -19,7 +19,7 @@ $(function(){
 
        // call the server-side function 'login' and send user's parameters
         // enviar(name);
-        
+         LeerArchivoJson();
         loginScreen.css('display','none');
         chatScreen.css('display','block');
         chatForm.css('display','block');
