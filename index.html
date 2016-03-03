@@ -155,6 +155,7 @@
                     '</li>');
 	    // $('#itemsContainer').prepend(obj);
         chats.append(obj);
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
 	    $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
 	    socket.emit('my other event', { my: 'data' })
         notifyMe(unescape(data.data));
@@ -235,6 +236,7 @@
                                 // var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'++'">'+unescape(jsonData['Backup'][f].mensaje)+'</div> <div class="time"><time>'+jsonData['Backup'][f].fecha+'</time></div></div>';
                                 // $('#itemsContainer').prepend(obj);
                                 chats.append(obj);
+                                $(document).scrollTop($(document).height());
                             }
                     },
                     dataType: 'text'
