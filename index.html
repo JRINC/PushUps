@@ -105,7 +105,7 @@
         socket.on('news', function (data) {
             
         //     <div class="alert alert-success" role="alert">...</div>
-            var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+data.color+'">'+data.data+'</div> <div class="time"><time>'+data.fecha+'</time></div></div>';
+            var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+data.color+'">'+unescape(data.data)+'</div> <div class="time"><time>'+data.fecha+'</time></div></div>';
             $('#itemsContainer').prepend(obj);
             $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
             socket.emit('my other event', { my: 'data' })
@@ -123,15 +123,26 @@
             } 
         });
         function enviar () {
-                
                 $.ajax({
                     type: 'POST',
                     url: '/notificaciones',
-                    data: '{"data":'+'"'+htmlEscape($('#Mensaje').val())+'","color":"'+$.color+'"}',
+                    data: '{"data":'+'"'+escape(strip_tags($('#Mensaje').val()))+'","color":"'+$.color+'"}',
                     contentType: "application/json",
                     success: function(data) {  $('#Mensaje').val(''); },
                     error: function(data) { alert("error");},
                     dataType: 'text'
+                });
+            }
+       function strip_tags(input, allowed) {
+                allowed = (((allowed || '') + '')
+                .toLowerCase()
+                .match(/<[a-z][a-z0-9]*>/g) || [])
+                .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+                commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+            return input.replace(commentsAndPhpTags, '')
+                .replace(tags, function($0, $1) {
+                return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
                 });
             }
         function LeerArchivoJson()
@@ -145,7 +156,7 @@
                             var jsonData = (JSON.parse(data));
                             for(f=0;f<jsonData['Backup'].length;f++)
                             {
-                                var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+jsonData['Backup'][f].color+'">'+jsonData['Backup'][f].mensaje+'</div> <div class="time"><time>'+jsonData['Backup'][f].fecha+'</time></div></div>';
+                                var obj = '<div="row"><div class="alert alert-success" role="alert" style="background-color:'+jsonData['Backup'][f].color+'">'+unescape(jsonData['Backup'][f].mensaje)+'</div> <div class="time"><time>'+jsonData['Backup'][f].fecha+'</time></div></div>';
                                 $('#itemsContainer').prepend(obj);
                             }
                     },
@@ -163,7 +174,7 @@
         // If it's okay let's create a notification
         //var notification = new Notification(Mensaje);
         
-        var options = {icon:'logo.png',  body:Mensaje  };
+        var options = {icon:'logo.png',  body:unescape(Mensaje)  };
         
         var notification = new Notification("Nuevo mensaje:",options);
         

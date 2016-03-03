@@ -32,7 +32,6 @@ app.post('/notificaciones', function(request, respond) {
 		respond.end();
     })
 });
-
 function appendObject(obj)
 {
   var configFile = fs.readFileSync('temp/backup.json');
