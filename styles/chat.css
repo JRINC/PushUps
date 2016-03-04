@@ -1,0 +1,118 @@
+.connected {
+	text-align:center;
+	display: block;
+	margin:0px auto;
+	width: 700px;
+	height: 400px;
+	background-color: #ffffff;
+	border-radius: 3px;
+	box-shadow:0px 3px 3px #e3e4e6;
+	color: #637277;
+}
+
+.connected h2 {
+	padding-top: 20px;
+}
+
+.infoConnected {
+	text-align: left;
+	float: right;
+	margin: 65px 165px 0 0;
+}
+
+.chatscreen{
+	display:none;
+	width:700px;
+	margin: 0 auto 200px;
+	overflow:hidden;
+}
+
+.image {
+	clear:both;
+	float:left;
+	height: 160px;
+	width: 80px;
+	text-align:center;
+	overflow: hidden;
+}
+
+.image img {
+	float: left;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+.me {
+	clear:both;
+	float:left;
+	margin-bottom:10px;
+}
+
+.you {
+	clear:both;
+	float:right;
+	margin-bottom:10px;
+}
+
+.you .image{
+	float:right;
+}
+
+.chats {
+	list-style-type: none;
+	margin-top:10px;
+}
+
+.chats .me p {
+	text-align:left;
+	float: left;
+	display: inline-block;
+	margin-left: 20px;
+	margin-bottom:30px;
+	padding: 25px 34px;
+	min-width: 160px;
+	min-height: 10px;
+	max-width: 510px;
+	background-color: #FFF;
+	border-radius: 3px;
+	box-shadow: 0px 3px 3px #E3E4E6;
+	color: #637277;
+	line-height: 1.4;
+	word-wrap: break-word;
+}
+
+.chats .you p {
+	text-align:left;
+	float: left;
+	display: inline-block;
+	margin-right:20px;
+	margin-bottom:30px;
+	padding: 25px 34px;
+	min-width: 160px;
+	min-height: 10px;
+	max-width: 510px;
+	background-color: #FFF;
+	border-radius: 3px;
+	box-shadow: 0px 3px 3px #E3E4E6;
+	color: #637277;
+	line-height: 1.4;
+	word-wrap: break-word;
+}
+
+footer {
+	position:fixed;
+	bottom:0;
+	left:0;
+	width:100%;
+	padding-top: 30px;
+	background-color: white;
+	height: 130px;
+}
+
+.chatform {
+	display:none;
+	width:700px;
+	margin: 0 auto;
+	background-color: white;
+}
