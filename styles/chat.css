@@ -1,7 +1,7 @@
 .connected {
+    margin: 40px auto;
 	text-align:center;
 	display: block;
-	margin:0px auto;
 	width: 700px;
 	height: 400px;
 	background-color: #ffffff;
@@ -23,7 +23,7 @@
 .chatscreen{
 	display:none;
 	width:700px;
-	margin: 0 auto 200px;
+	margin: 40px auto 150px;
 	overflow:hidden;
 }
 
