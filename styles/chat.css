@@ -1,13 +1,15 @@
 .connected {
-    margin: 40px auto;
-	text-align:center;
-	display: block;
-	width: 700px;
-	height: 400px;
-	background-color: #ffffff;
-	border-radius: 3px;
-	box-shadow:0px 3px 3px #e3e4e6;
-	color: #637277;
+   margin: 40px auto;
+    text-align: center;
+    display: block;
+    width: 279px;
+    height: 200px;
+    background-color: #3A3A3A;
+    border-radius: 3px;
+    box-shadow: 0px 3px 3px #3A3A3A;
+    color: #637277;
+    margin-top: 130;
+    padding: 10px;
 }
 
 .connected h2 {
@@ -15,15 +17,17 @@
 }
 
 .infoConnected {
-	text-align: left;
-	float: right;
-	margin: 65px 165px 0 0;
+	text-align: center;
+}
+
+.infoConnected input {
+	text-align: center;
 }
 
 .chatscreen{
 	display:none;
 	width:700px;
-	margin: 40px auto 150px;
+	margin: 130px auto 100px;
 	overflow:hidden;
 }
 
@@ -46,13 +50,11 @@
 .me {
 	clear:both;
 	float:left;
-	margin-bottom:10px;
 }
 
 .you {
 	clear:both;
 	float:right;
-	margin-bottom:10px;
 }
 
 .you .image{
@@ -68,7 +70,7 @@
 	text-align:left;
 	float: left;
 	display: inline-block;
-	margin-left: 20px;
+	margin-top:6px;
 	margin-bottom:30px;
 	padding: 25px 34px;
 	min-width: 160px;
@@ -76,7 +78,7 @@
 	max-width: 510px;
 	background-color: #FFF;
 	border-radius: 3px;
-	box-shadow: 0px 3px 3px #E3E4E6;
+	box-shadow: 0px 3px 3px #343435;
 	color: #637277;
 	line-height: 1.4;
 	word-wrap: break-word;
@@ -86,7 +88,7 @@
 	text-align:left;
 	float: left;
 	display: inline-block;
-	margin-right:20px;
+	margin-top:6px;
 	margin-bottom:30px;
 	padding: 25px 34px;
 	min-width: 160px;
@@ -94,7 +96,7 @@
 	max-width: 510px;
 	background-color: #FFF;
 	border-radius: 3px;
-	box-shadow: 0px 3px 3px #E3E4E6;
+	box-shadow: 0px 3px 3px #343435;
 	color: #637277;
 	line-height: 1.4;
 	word-wrap: break-word;
@@ -135,14 +137,14 @@ footer {
 	bottom:0;
 	left:0;
 	width:100%;
-	padding-top: 30px;
-	background-color: white;
-	height: 130px;
+	padding-top: 10px;
+	background-color: #2F2E2E;
+	height: 80px;
 }
 
 .chatform {
 	display:none;
 	width:700px;
 	margin: 0 auto;
-	background-color: white;
+	
 }
