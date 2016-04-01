@@ -23,7 +23,7 @@ io.on('connection', function (socket) {
 app.post('/notificaciones', function(request, respond) {
     request.on('data', function(data) {
         var body = JSON.parse(data);
-        body.fecha = Date();
+        // body.fecha = Date();
 		io.sockets.emit('news', body);
          var mydatos =  {
                 color:body.color,

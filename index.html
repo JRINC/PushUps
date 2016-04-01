@@ -26,6 +26,12 @@
 			}
 
 			.time{
+                /*clear:both;
+                float:left;
+                height: 160px;
+                min-width: 160px;
+                overflow: hidden;
+
 				font-family: verdana;
 				font-size: 9px;
 				background-color: #494949;
@@ -38,7 +44,7 @@
 				width: 400px;
 				margin-left: 6px;
 				margin-bottom: 5px;
-                color:#f7f7f7;
+                color:#f7f7f7;*/
 			}
 
 			.container {
@@ -117,6 +123,32 @@
 	<script src="chat.js"></script>
      <script src="bootstrap.min.js"></script>
 	<script>
+        // Manejo de fechas para los mensajes
+        var weekDay = new Array();
+        weekDay[0] = "Dom";
+        weekDay[1] = "Lun";
+        weekDay[2] = "Mar";
+        weekDay[3] = "Mie";
+        weekDay[4] = "Jue";
+        weekDay[5] = "Vie";
+        weekDay[6] = "Sab";
+
+        var yearMonth = new Array();
+        yearMonth[0] = "Enero";
+        yearMonth[1] = "Febrero";
+        yearMonth[2] = "Marzo";
+        yearMonth[3] = "Abril";
+        yearMonth[4] = "Mayo";
+        yearMonth[5] = "Junio";
+        yearMonth[6] = "Julio";
+        yearMonth[7] = "Agosto";
+        yearMonth[8] = "Septiembre";
+        yearMonth[9] = "Octubre";
+        yearMonth[10] = "Noviembre";
+        yearMonth[11] = "Diciembre";
+
+        
+        
         var url      = window.location.href
         function pastelColors(){
             var hue = Math.floor(Math.random() * 360);
@@ -152,9 +184,9 @@
                             + unescape(data.data) +
                         '</p>' +
                         // '</div>' +
-                        // '<div class="time">' +
-                        //     '<time>'+new Date()+'</time>' +
-                        // '</div>' +
+                        '<div class="time">' +
+                            data.fecha+
+                        '</div>' +
                     '</li>');
 	    // $('#itemsContainer').prepend(obj);
         chats.append(obj);
@@ -179,10 +211,18 @@
     });
     
         function enviar () {
+            var date = new Date();
+            var minutes = date.getMinutes() < 10 ? "0" +  date.getMinutes() :  date.getMinutes();
+            var seconds = date.getSeconds() < 10 ? "0" +  date.getSeconds() :  date.getSeconds();
              $.ajax({
                 type: 'POST',
                 url: '/notificaciones',
-                data: '{"user":"' + $.nombreUsuario + '","avatar":"unnamed.jpg","data":'+'"'+escape(strip_tags($('#Mensaje').val()))+'","color":"'+$.color+'"}',
+                data: '{"user":"' + $.nombreUsuario + '"' +
+                      ',"avatar":"unnamed.jpg"' +
+                      ',"data":"'+escape(strip_tags($('#Mensaje').val()))+'"' +
+                    //   ',"fecha":"' + weekDay[date.getDay()] + ", " + yearMonth[date.getMonth()] + " " + date.getDate() + " de " + date.getFullYear() + ", " + date.getHours() + ":" + minutes + ":" + seconds + '"' +
+                      ',"fecha":"' + weekDay[date.getDay()] + ", " + date.toLocaleDateString() + ", " + date.getHours() + ":" + minutes + ":" + seconds + '"' +
+                      ',"color":"'+$.color+'"}',
                 contentType: "application/json",
                 success: function(data) {  $('#Mensaje').val(''); },
                 error: function(data) { alert("error");},
@@ -221,10 +261,13 @@
                                     who = 'you';
                                 }
 
-                                var obj = $('<li class="'+ who +'">' +
-                                                '<div class="image">' +
+                                var obj = $('<li class="'+ who +' row">' +
+                                                '<div class="image col-m-2">' +
                                                     '<img src=' + jsonData['Backup'][f].avatar + ' />' +
                                                     '<b>' + jsonData['Backup'][f].user + '</b>' +
+                                                '</div>' +
+                                                '<div class="time  col-md-2">' +
+                                                    jsonData['Backup'][f].fecha +
                                                 '</div>' +
                                                 // '<div class="container" style="background-color:' + data.color + '">'
                                                 '<p style="background-color:' + jsonData['Backup'][f].color + '">'
