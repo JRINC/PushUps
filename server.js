@@ -17,20 +17,22 @@ app.get('/json', function (req, res) {
   res.send(configFile);
 });
 io.on('connection', function (socket) {
-  socket.emit('news', { user: 'Server', avatar: 'unnamed.jpg', data: 'Server up :D',color:'aa41d3',fecha:Date() });
+  socket.emit('news', { user: 'Server', avatar: 'unnamed.jpg', data: 'Server up :D',color:'aa41d3',fecha:Date()});
   socket.on('my other event', function (data) {});
 });
 app.post('/notificaciones', function(request, respond) {
     request.on('data', function(data) {
         var body = JSON.parse(data);
         body.fecha = Date();
+        body.id=new Date().getTime();
 		io.sockets.emit('news', body);
          var mydatos =  {
                 color:body.color,
                 mensaje:body.data,
                 fecha: body.fecha,
                 user: body.user,
-                avatar: body.avatar
+                avatar: body.avatar,
+                id: body.id
             };
         appendObject(mydatos);
 		respond.end();

@@ -88,12 +88,10 @@
 		<div class="header">[Dev Chat :D] De los desarrolladores para los desarrolladores.</div>
 		
 		<div class="connected">
-			<img src="unnamed.jpg" id="creatorImage" />
+			<div class="name" id="nickNameLogo">Valor</div>
 			<div class="infoConnected">
-				<h2>Create your avatar</h2>
-				<br/>
 				<form class="loginForm">
-					<input type="text" id="nickName" placeholder="Nick name" /><br/>
+					<input type="text" class="form-control" id="nickName" placeholder="Nick name" /><br/>
 					<input type="submit" class="btn btn-default" id="enterChat" value="ENTER" />
 				</form>
 			</div>
@@ -115,7 +113,9 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
 	<script src="chat.js"></script>
-     <script src="bootstrap.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="jquery.nameBadges.js"></script>
+
 	<script>
         var url      = window.location.href
         function pastelColors(){
@@ -125,6 +125,7 @@
             }
      $(document).ready(function(){
          $.color = pastelColors();
+         renderLogoC('nickNameLogo',$.color)
         
      });
      
@@ -141,10 +142,12 @@
 		else {
 			who = 'you';
 		}
-        
+       
+       
+       
 	    var obj = $('<li class="'+ who +'">' +
                         '<div class="image">' +
-                            '<img src=' + data.avatar + ' />' +
+                            '<div id="name_'+data.id+'">' + data.user + '</div>' +
                             '<b>' + data.user + '</b>' +
                         '</div>' +
                         // '<div class="container" style="background-color:' + data.color + '">'
@@ -158,6 +161,7 @@
                     '</li>');
 	    // $('#itemsContainer').prepend(obj);
         chats.append(obj);
+        renderLogoC('name_'+data.id,data.color);
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
 	    $(".header").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
 	    socket.emit('my other event', { my: 'data' })
@@ -223,7 +227,7 @@
 
                                 var obj = $('<li class="'+ who +'">' +
                                                 '<div class="image">' +
-                                                    '<img src=' + jsonData['Backup'][f].avatar + ' />' +
+                                                    '<div id="name_'+jsonData['Backup'][f].id+'">' + jsonData['Backup'][f].user + '</div>' +
                                                     '<b>' + jsonData['Backup'][f].user + '</b>' +
                                                 '</div>' +
                                                 // '<div class="container" style="background-color:' + data.color + '">'
@@ -240,6 +244,8 @@
                                 // $('#itemsContainer').prepend(obj);
                                 chats.append(obj);
                                 $(document).scrollTop($(document).height());
+                                renderLogoC('name_'+jsonData['Backup'][f].id,jsonData['Backup'][f].color);
+
                             }
                     },
                     dataType: 'text'
@@ -279,6 +285,42 @@
   // want to be respectful there is no need to bother him any more.
     } 
     
+    function renderLogo (color){
+    $('.name').nameBadge({
+        border: {
+				color: '#343435',
+				width: 1
+			},
+        colors: [color],
+        text: '#555',
+        size: 72,
+        margin: 5,
+        middlename: true,
+        uppercase: true
+      });}
+      
+    function renderLogoC (id,color){
+    $('#'+id).nameBadge({
+        border: {
+				color: '#343435',
+				width: 1
+			},
+        colors: [color],
+        text: '#555',
+        size: 72,
+        margin: 5,
+        middlename: true,
+        uppercase: true
+      });}
+      
+      $('#nickName').keyup(function(){
+         if($('#nickName').val() !=''){
+          $('#nickNameLogo').html($('#nickName').val());
+          renderLogoC('nickNameLogo',$.color)
+          } 
+      })
+    
 	</script>
+    
     </body>
 </html>
